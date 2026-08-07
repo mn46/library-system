@@ -1,11 +1,19 @@
 const express = require("express");
-const sequelize = require("../util/database");
+const db = require("../models/index");
+const userRoutes = require("../routes/user");
 
 const app = express();
 
-sequelize
+app.use(express.json());
+
+// routes
+app.use(userRoutes);
+
+db.sequelize
   .authenticate()
   .then(() => console.log("Database connected successfully!"))
   .catch((err) => console.error("Unable to connect:", err));
 
-app.listen(3000);
+db.sequelize.sync();
+
+app.listen(4000);
