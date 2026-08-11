@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Rental.init(
     {
-      bookId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       dateFrom: DataTypes.DATE,
       dateTo: DataTypes.DATE,
