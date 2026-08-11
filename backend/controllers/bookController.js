@@ -23,3 +23,26 @@ exports.getBooks = async (req, res) => {
     });
   }
 };
+
+exports.getBook = async (req, res) => {
+  try {
+    const book = await Book.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: Author,
+          attributes: ["id", "name"],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      data: book,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "There was an issue loading books and authors.",
+    });
+  }
+};
