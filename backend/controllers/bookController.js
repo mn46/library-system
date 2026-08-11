@@ -1,3 +1,4 @@
+const { bookCollection } = require("../resources/bookResource");
 const db = require("../models/index");
 const Book = db.Book;
 const Author = db.Author;
@@ -15,7 +16,7 @@ exports.getBooks = async (req, res) => {
     });
 
     return res.status(200).json({
-      data: books,
+      data: bookCollection(books),
     });
   } catch (error) {
     return res.status(500).json({
@@ -38,7 +39,7 @@ exports.getBook = async (req, res) => {
     });
 
     return res.status(200).json({
-      data: book,
+      data: bookCollection(book),
     });
   } catch (error) {
     return res.status(500).json({
