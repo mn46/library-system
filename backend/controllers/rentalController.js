@@ -66,3 +66,45 @@ exports.getRentals = async (req, res) => {
     });
   }
 };
+
+exports.updateRental = async (req, res) => {
+  try {
+    const rentalId = req.params.rentalId;
+    const books = req.validated.books;
+
+    const rental = await Rental.findOne({
+      where: { id: rentalId },
+      include: [
+        {
+          model: Book,
+          attributes: ["id"],
+        },
+      ],
+    });
+
+    if (!rental) {
+      return res.status(404).json({ message: "Rental was not found." });
+    }
+
+    const rentedBooks = rental.Books;
+
+    const booksToAdd = books.filter((book) => !rentedBooks.includes(book.id));
+    const booksToRemove = rentedBooks.filter(
+      (book) => !books.includes(book.id),
+    );
+
+    if (booksToAdd) {
+      await rental.addBooks(booksToAdd, { through: "BookRental" });
+    }
+
+    if (booksToRemove) {
+      await rental.removeBooks(booksToRemove, { through: "BookRental" });
+    }
+
+    return res.status(200).json({ message: "Your rental was updated." });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "There was an issue loading books and authors.",
+    });
+  }
+};

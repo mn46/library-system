@@ -1,5 +1,6 @@
 const express = require("express");
 const createRentalSchema = require("../requests/createRentalRequest");
+const updateRentalSchema = require("../requests/updateRentalRequest");
 const rentalController = require("../controllers/rentalController");
 const { validate, validateUser } = require("../helpers/index");
 
@@ -13,5 +14,12 @@ router.post(
 );
 
 router.get("/:userId/rentals", validateUser, rentalController.getRentals);
+
+router.post(
+  "/:userId/rentals/:rentalId",
+  validate(updateRentalSchema),
+  validateUser,
+  rentalController.updateRental,
+);
 
 module.exports = router;
