@@ -3,6 +3,7 @@ const db = require("../models/index");
 require("dotenv").config();
 const userRoutes = require("../routes/user");
 const authRoutes = require("../routes/auth");
+const bookRoutes = require("../routes/book");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
@@ -30,7 +31,9 @@ app.use(
 // ROUTES
 app.use(userRoutes);
 app.use(authRoutes);
+app.use(bookRoutes);
 
+// INIT
 db.sequelize
   .authenticate()
   .then(() => console.log("Database connected successfully!"))
