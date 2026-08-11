@@ -22,4 +22,10 @@ router.post(
   rentalController.updateRental,
 );
 
+router.delete(
+  "/:userId/rentals/:rentalId",
+  validateUser,
+  rentalController.deleteRental,
+);
+
 module.exports = router;

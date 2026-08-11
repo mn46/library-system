@@ -108,3 +108,16 @@ exports.updateRental = async (req, res) => {
     });
   }
 };
+
+exports.deleteRental = async (req, res) => {
+  try {
+    const rentalId = req.params.rentalId;
+    await Rental.destroy({ where: { id: rentalId } });
+
+    return res.status(200).json({ message: "Rental was deleted." });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "There was an issue loading books and authors.",
+    });
+  }
+};
