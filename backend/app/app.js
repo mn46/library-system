@@ -4,6 +4,7 @@ require("dotenv").config();
 const userRoutes = require("../routes/user");
 const authRoutes = require("../routes/auth");
 const bookRoutes = require("../routes/book");
+const rentalRoutes = require("../routes/rental");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
@@ -32,6 +33,7 @@ app.use(
 app.use(userRoutes);
 app.use(authRoutes);
 app.use(bookRoutes);
+app.use(rentalRoutes);
 
 // INIT
 db.sequelize
