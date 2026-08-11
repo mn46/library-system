@@ -1,9 +1,7 @@
 const express = require("express");
-const {
-  createRentalSchema,
-  validate,
-} = require("../requests/createRentalRequest");
+const createRentalSchema = require("../requests/createRentalRequest");
 const rentalController = require("../controllers/rentalController");
+const { validate } = require("../helpers/index");
 
 const router = express.Router();
 
