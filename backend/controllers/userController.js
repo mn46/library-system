@@ -5,7 +5,7 @@ const User = db.User;
 
 exports.postCreateUser = async (req, res) => {
   try {
-    const email = req.body.email;
+    const email = req.validated.email;
 
     const existingUser = await User.findOne({ where: { email: email } });
 
@@ -13,7 +13,7 @@ exports.postCreateUser = async (req, res) => {
       return res.status(400).json({ message: "This user already exists." });
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.validated.password, 10);
 
     const user = await User.create({
       email: email,
