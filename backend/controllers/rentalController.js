@@ -6,22 +6,10 @@ const Book = db.Book;
 const Author = db.Author;
 
 exports.createRental = async (req, res) => {
-  const userId = req.validated.userId;
-  const booksIds = req.validated.books;
-
-  const loggedInUserId = req.session.userId;
-
-  if (!loggedInUserId) {
-    return res
-      .status(401)
-      .json({ message: "You have to log in to create a rental." });
-  }
-
-  if (Number(loggedInUserId) !== Number(userId)) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
   try {
+    userId = req.params.userId;
+    const booksIds = req.validated.books;
+
     const TODAY = new Date();
     const DATE_TO = new Date(TODAY);
     DATE_TO.setDate(TODAY.getDate() + 30);
@@ -48,22 +36,11 @@ exports.createRental = async (req, res) => {
 };
 
 exports.getRentals = async (req, res) => {
-  const reqUserId = req.params.userId;
-  const loggedInUserId = req.session.userId;
-
-  if (!loggedInUserId) {
-    return res
-      .status(401)
-      .json({ message: "You have to log in to view your rentals." });
-  }
-
-  if (Number(loggedInUserId) !== Number(reqUserId)) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
   try {
+    const userId = req.params.userId;
+
     const rentals = await Rental.findAll({
-      where: { userId: reqUserId },
+      where: { userId },
       include: [
         {
           model: Book,
