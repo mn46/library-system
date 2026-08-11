@@ -11,4 +11,6 @@ router.post(
   rentalController.createRental,
 );
 
+router.get("/rental/:userId", rentalController.getRentals);
+
 module.exports = router;
