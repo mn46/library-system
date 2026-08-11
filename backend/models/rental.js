@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Rental.associate = (models) => {
     Rental.belongsTo(models.User);
-    Rental.hasMany(models.Book);
+    Rental.belongsToMany(models.Book, { through: "BookRental" });
   };
   return Rental;
 };

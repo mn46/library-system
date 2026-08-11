@@ -24,8 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Book.associate = (models) => {
-    Book.belongsTo(models.User);
-    Book.belongsTo(models.Rental);
+    Book.belongsToMany(models.Rental, { through: "BookRental" });
     Book.belongsToMany(models.Author, { through: "AuthorBook" });
   };
   return Book;
