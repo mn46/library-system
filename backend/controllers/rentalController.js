@@ -88,14 +88,9 @@ exports.updateRental = async (req, res) => {
 
     const rentedBooks = rental.Books;
 
-    const booksToAdd = books.filter((book) => !rentedBooks.includes(book.id));
     const booksToRemove = rentedBooks.filter(
       (book) => !books.includes(book.id),
     );
-
-    if (booksToAdd) {
-      await rental.addBooks(booksToAdd, { through: "BookRental" });
-    }
 
     if (booksToRemove) {
       await rental.removeBooks(booksToRemove, { through: "BookRental" });
