@@ -6,12 +6,12 @@ const { validate, validateUser } = require("../helpers/index");
 const router = express.Router();
 
 router.post(
-  "/rental/:userId",
+  "/:userId/rentals",
   validate(createRentalSchema),
   validateUser,
   rentalController.createRental,
 );
 
-router.get("/rental/:userId", validateUser, rentalController.getRentals);
+router.get("/:userId/rentals", validateUser, rentalController.getRentals);
 
 module.exports = router;

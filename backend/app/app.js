@@ -33,7 +33,7 @@ app.use(
 app.use(userRoutes);
 app.use(authRoutes);
 app.use(bookRoutes);
-app.use(rentalRoutes);
+app.use("/user", rentalRoutes);
 
 // INIT
 db.sequelize
