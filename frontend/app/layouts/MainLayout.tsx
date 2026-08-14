@@ -12,7 +12,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
         <Navigation />
       </header>
 
-      <main>{children}</main>
+      <main className="mt-10">{children}</main>
     </>
   );
 };
