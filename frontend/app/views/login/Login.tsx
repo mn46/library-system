@@ -1,7 +1,61 @@
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
+import { useForm } from "react-hook-form";
 import MainLayout from "~/layouts/MainLayout";
 
-const Login = () => {
+interface Inputs {
+  email: string;
+  password: string;
+}
+
+const Login: React.FC = () => {
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: "onBlur",
+  });
+
+  const postLoginMutation = useMutation({
+    mutationFn: async (data: Inputs) => {
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL_DEV}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const body = await res.json();
+
+      if (res.status === 401) {
+        throw new Error(
+          body?.message ?? "There was an issue with logging in.",
+          { cause: 401 },
+        );
+      } else {
+        throw new Error(
+          body?.message ?? "An unknown error occured when logging in.",
+          { cause: res.status },
+        );
+      }
+
+      return body;
+    },
+    onError: (error) => {
+      if (error.cause === 401) {
+        setError("email", { message: error.message });
+        setError("password", { message: error.message });
+      } else {
+        setError("password", { message: error.message });
+      }
+    },
+  });
+
+  const handleSubmitLogin = (data: Inputs) => {
+    postLoginMutation.mutate(data);
+  };
+
   return (
     <MainLayout>
       <div className="flex flex-col items-center space-y-6">
@@ -11,15 +65,32 @@ const Login = () => {
 
         <h2 className="text-2xl">Log in</h2>
 
-        <form className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(handleSubmitLogin)}
+        >
           <div className="flex flex-col gap-2">
             <label htmlFor="email">email</label>
-            <input id="email" name="email" type="text" />
+            <input
+              id="email"
+              type="text"
+              {...register("email", { required: "This field is required." })}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="password">password</label>
-            <input id="password" name="password" type="password" />
+            <input
+              id="password"
+              type="password"
+              {...register("password", { required: "This field is required." })}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
           </div>
 
           <div className="flex flex-col gap-2 mt-4">
