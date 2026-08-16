@@ -74,7 +74,13 @@ const Login: React.FC = () => {
             <input
               id="email"
               type="text"
-              {...register("email", { required: "This field is required." })}
+              {...register("email", {
+                required: "This field is required.",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address.",
+                },
+              })}
             />
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -86,7 +92,13 @@ const Login: React.FC = () => {
             <input
               id="password"
               type="password"
-              {...register("password", { required: "This field is required." })}
+              {...register("password", {
+                required: "This field is required.",
+                minLength: {
+                  value: 10,
+                  message: "Password must be at least 10 characters long.",
+                },
+              })}
             />
             {errors.password && (
               <p className="text-sm text-red-500">{errors.password.message}</p>
