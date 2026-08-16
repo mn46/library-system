@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const db = require("../models/index");
 require("dotenv").config();
 const userRoutes = require("../routes/user");
@@ -11,6 +12,13 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const app = express();
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
+  }),
+);
 
 // SESSION
 
@@ -26,6 +34,11 @@ app.use(
     store: sequelizeStore,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    },
   }),
 );
 
