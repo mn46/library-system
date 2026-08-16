@@ -28,5 +28,9 @@ body {
 
 input[type="text"],
 input[type="password"] {
-  @apply px-2 py-1 rounded-full border-2 bg-gray-50 border-gray-500 focus:border-blue-400 focus:bg-blue-50 outline-0 focus:ring-1 focus:ring-blue-400;
+  @apply px-2 py-1 rounded-full border-2 bg-gray-50 border-gray-500 focus:border-blue-400 focus:bg-blue-50 outline-0 focus:ring-1 focus:ring-blue-400 min-w-0 w-full;
+}
+
+.error-text {
+  @apply text-sm text-red-500;
 }

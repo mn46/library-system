@@ -58,7 +58,7 @@ const Login: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="flex flex-col items-center space-y-6">
+      <div className="flex flex-col items-center justify-center space-y-6">
         <h1 className="text-6xl text-blue-400 uppercase font-extrabold">
           library
         </h1>
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
         <h2 className="text-2xl">Log in</h2>
 
         <form
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 w-62"
           onSubmit={handleSubmit(handleSubmitLogin)}
         >
           <div className="flex flex-col gap-2">
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
               })}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="error-text">{errors.email.message}</p>
             )}
           </div>
 
@@ -101,11 +101,11 @@ const Login: React.FC = () => {
               })}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="error-text">{errors.password.message}</p>
             )}
           </div>
 
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col gap-2 mt-4 w-full">
             <button type="submit" className="button-primary">
               log in
             </button>
