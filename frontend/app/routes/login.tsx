@@ -1,10 +1,10 @@
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/login";
 import LoginView from "~/views/login/Login";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Login" },
-    { name: "Login", content: "Log in to the Library System" },
+    { title: "Log in" },
+    { name: "Log in", content: "Log in to the Library System" },
   ];
 }
 
