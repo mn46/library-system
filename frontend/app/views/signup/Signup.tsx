@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { redirect } from "react-router";
+import { useNavigate } from "react-router";
 import MainLayout from "~/layouts/MainLayout";
 
 interface Inputs {
@@ -20,6 +20,8 @@ const Signup: React.FC = () => {
   } = useForm<Inputs>({
     mode: "onBlur",
   });
+
+  const navigate = useNavigate();
 
   const postSignupMutation = useMutation({
     mutationFn: async (data: Inputs) => {
@@ -48,7 +50,7 @@ const Signup: React.FC = () => {
       return body;
     },
     onSuccess: () => {
-      redirect("/login");
+      navigate("/login");
     },
     onError: (error) => {
       if (error.cause === 400) {
