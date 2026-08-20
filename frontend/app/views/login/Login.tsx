@@ -28,12 +28,7 @@ const Login: React.FC = () => {
 
       const body = await res.json();
 
-      if (res.status === 401) {
-        throw new Error(
-          body?.message ?? "There was an issue with logging in.",
-          { cause: 401 },
-        );
-      } else {
+      if (!res.ok) {
         throw new Error(
           body?.message ?? "An unknown error occured when logging in.",
           { cause: res.status },
@@ -43,12 +38,10 @@ const Login: React.FC = () => {
       return body;
     },
     onError: (error) => {
-      if (error.cause === 401) {
-        setError("email", { message: error.message });
-        setError("password", { message: error.message });
-      } else {
-        setError("password", { message: error.message });
-      }
+      setError("root.apiError", {
+        type: String(error.cause),
+        message: error.message,
+      });
     },
   });
 
@@ -94,16 +87,18 @@ const Login: React.FC = () => {
               type="password"
               {...register("password", {
                 required: "This field is required.",
-                minLength: {
-                  value: 10,
-                  message: "Password must be at least 10 characters long.",
-                },
               })}
             />
             {errors.password && (
               <p className="error-text">{errors.password.message}</p>
             )}
           </div>
+
+          {errors.root?.apiError && (
+            <p className="error-text p-2 rounded-xl bg-red-200">
+              {errors.root.apiError.message}
+            </p>
+          )}
 
           <div className="flex flex-col gap-2 mt-4 w-full">
             <button type="submit" className="button-primary">
