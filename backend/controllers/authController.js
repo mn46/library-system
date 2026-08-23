@@ -20,6 +20,10 @@ exports.postLogin = async (req, res) => {
       return res.status(401).json({ message: "Incorrect login credentials." });
     }
 
+    if (req.session.userId === existingUser.id) {
+      return res.json({ message: "Already logged in." });
+    }
+
     const isPasswordValid = await bcrypt.compare(
       password,
       existingUser.password,
@@ -60,5 +64,13 @@ exports.postLogout = (req, res) => {
     return res.status(500).json({
       message: error.message || "An error occurred when logging out.",
     });
+  }
+};
+
+exports.requireAuth = (req, res) => {
+  if (req.session.userId) {
+    return res.json({ user: req.session.userId });
+  } else {
+    return res.status(401).json({ message: "You are not logged in." });
   }
 };

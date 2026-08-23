@@ -23,6 +23,7 @@ const Login: React.FC = () => {
       const res = await fetch(`${import.meta.env.VITE_BASE_URL_DEV}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(data),
       });
 
