@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { useSession } from "~/context/SessionContext";
 import MainLayout from "~/layouts/MainLayout";
 
@@ -11,6 +12,7 @@ interface Inputs {
 
 const Login: React.FC = () => {
   const { setUser } = useSession();
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -43,6 +45,7 @@ const Login: React.FC = () => {
     },
     onSuccess: (res) => {
       setUser(res.userId);
+      navigate("/books");
     },
     onError: (error) => {
       setError("root.apiError", {
