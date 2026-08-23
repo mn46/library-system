@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "~/context/SessionContext";
 import MainLayout from "~/layouts/MainLayout";
 
 interface Inputs {
@@ -9,6 +10,8 @@ interface Inputs {
 }
 
 const Login: React.FC = () => {
+  const { setUser } = useSession();
+
   const {
     handleSubmit,
     register,
@@ -37,6 +40,9 @@ const Login: React.FC = () => {
       }
 
       return body;
+    },
+    onSuccess: (res) => {
+      setUser(res.userId);
     },
     onError: (error) => {
       setError("root.apiError", {

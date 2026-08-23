@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "~/context/SessionContext";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { user, setUser } = useSession();
+  const navigate = useNavigate();
+
+  const postLogoutMutation = useMutation({
+    mutationFn: () =>
+      fetch(`${import.meta.env.VITE_BASE_URL_DEV}/logout`, {
+        method: "POST",
+        credentials: "include",
+      }),
+    onSuccess: () => {
+      setUser(null);
+      navigate("/login");
+    },
+  });
 
   return (
     <nav>
@@ -24,16 +42,29 @@ const Navigation: React.FC = () => {
           <li>
             <a href="/my-books">My books</a>
           </li>
-          <li>
-            <a href="/login" className="button-white-secondary">
-              Log in
-            </a>
-          </li>
-          <li>
-            <a href="/sign-up" className="button-white">
-              Sign up
-            </a>
-          </li>
+          {user ? (
+            <li>
+              <button
+                className="button-white"
+                onClick={() => postLogoutMutation.mutate()}
+              >
+                Log out
+              </button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <a href="/login" className="button-white-secondary">
+                  Log in
+                </a>
+              </li>
+              <li>
+                <a href="/sign-up" className="button-white">
+                  Sign up
+                </a>
+              </li>
+            </>
+          )}
         </div>
       </ul>
 

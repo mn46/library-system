@@ -1,4 +1,4 @@
-export const getSession = async (): Promise<{ id: number } | null> => {
+export const getSession = async (): Promise<number | null> => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL_DEV}/session`, {
     credentials: "include",
   });

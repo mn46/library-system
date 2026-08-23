@@ -40,7 +40,9 @@ exports.postLogin = async (req, res) => {
           .status(500)
           .json({ message: "Could not log in, please try again." });
       }
-      res.status(200).json({ message: "User was logged in." });
+      res
+        .status(200)
+        .json({ message: "User was logged in.", userId: existingUser.id });
     });
   } catch (error) {
     return res.status(500).json({
