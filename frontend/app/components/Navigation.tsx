@@ -37,7 +37,7 @@ const Navigation: React.FC = () => {
 
         <div className="flex flex-row gap-5 items-center text-white font-semibold">
           <li>
-            <a href="/">All books</a>
+            <a href="/books">All books</a>
           </li>
           <li>
             <a href="/my-books">My books</a>
@@ -93,7 +93,7 @@ const Navigation: React.FC = () => {
         {isOpen && (
           <div className="fixed top-14 left-0 w-screen h-[88vh] bg-white flex flex-col justify-center items-center gap-5">
             <li>
-              <a href="/">All books</a>
+              <a href="/books">All books</a>
             </li>
             <li>
               <a href="/my-books">My books</a>

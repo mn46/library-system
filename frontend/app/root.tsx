@@ -6,7 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
+import { Toaster } from "react-hot-toast";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -49,6 +49,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionContextProvider>
+        <Toaster position="bottom-center" />
         <Outlet />
       </SessionContextProvider>
     </QueryClientProvider>
