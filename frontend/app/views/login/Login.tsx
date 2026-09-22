@@ -45,7 +45,7 @@ const Login: React.FC = () => {
     },
     onSuccess: (res) => {
       setUser(res.userId);
-      navigate("/books");
+      navigate("/");
     },
     onError: (error) => {
       setError("root.apiError", {

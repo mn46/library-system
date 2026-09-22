@@ -4,19 +4,24 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 import { useSession } from "~/context/SessionContext";
 import MainLayout from "~/layouts/MainLayout";
-import type { Book } from "~/lib/types";
+import type { Book as BookType } from "~/lib/types";
 
 interface Props {
-  books: { data: Book[] };
+  data: { data: BookType };
 }
 
-const Books: React.FC<Props> = ({ books }) => {
+const Book: React.FC<Props> = ({ data }) => {
+  const book = data.data;
+
   const { user } = useSession();
 
-  const { handleSubmit, register, watch, reset } = useForm<{
-    books: string[];
+  const navigate = useNavigate();
+
+  const { handleSubmit, register } = useForm<{
+    book: string;
   }>();
 
   const postRentalMutation = useMutation({
@@ -43,8 +48,8 @@ const Books: React.FC<Props> = ({ books }) => {
       return body;
     },
     onSuccess: () => {
-      toast.success("The books were rented successfully.");
-      reset();
+      toast.success("The book was rented successfully.");
+      navigate("/my-books");
     },
     onError: (error) => {
       toast.error(
@@ -53,8 +58,8 @@ const Books: React.FC<Props> = ({ books }) => {
     },
   });
 
-  const submitRental = (data: { books: string[] }) => {
-    const ids = data.books.map((id) => Number(id));
+  const submitRental = (data: { book: string }) => {
+    const ids = [Number(data.book)];
     postRentalMutation.mutate({ books: ids });
   };
 
@@ -62,14 +67,22 @@ const Books: React.FC<Props> = ({ books }) => {
     <MainLayout>
       <form
         onSubmit={handleSubmit(submitRental)}
-        className="lg:max-w-[40vw] mx-auto"
+        className="space-y-6 lg:mx-50"
       >
+        <input {...register("book")} hidden={true} value={book.id} />
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold italic">{book.title}</h1>
+          <p className="space-x-2 text-sm">
+            {book.authors.map((author) => (
+              <span>{author.name}</span>
+            ))}
+          </p>
+        </div>
+        <p>{book.description}</p>
         {user ? (
-          <div className="flex justify-end">
-            <button type="submit" className="button-primary mb-10">
-              Rent {watch("books") ? watch("books").length : 0} books
-            </button>
-          </div>
+          <button type="submit" className="button-primary">
+            rent book
+          </button>
         ) : (
           <div className="italic font-semibold mb-10 bg-blue-100 border-2 border-blue-500 rounded-lg px-3 py-2 flex flex-row items-center gap-2">
             <FontAwesomeIcon icon={faInfoCircle} className="text-blue-500" />
@@ -79,35 +92,9 @@ const Books: React.FC<Props> = ({ books }) => {
             </a>
           </div>
         )}
-        {books ? (
-          books.data.map((book) => (
-            <div className="flex flex-row justify-between mb-10 items-center">
-              <div>
-                <a
-                  href={`/books/${book.id}`}
-                  className="text-2xl italic font-semibold cursor-pointer hover:text-blue-400 transition-colors duration-300 ease-out"
-                >
-                  {book.title}
-                </a>
-                {book.authors.map((author) => (
-                  <p>{author.name}</p>
-                ))}
-              </div>
-              <input
-                type="checkbox"
-                id={String(book.id)}
-                value={book.id}
-                {...register("books")}
-                className="w-6 h-6"
-              />
-            </div>
-          ))
-        ) : (
-          <h2 className="text-2xl mx-10">No books at the moment.</h2>
-        )}
       </form>
     </MainLayout>
   );
 };
 
-export default Books;
+export default Book;
