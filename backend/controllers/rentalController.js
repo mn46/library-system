@@ -86,14 +86,12 @@ exports.updateRental = async (req, res) => {
       return res.status(404).json({ message: "Rental was not found." });
     }
 
-    const rentedBooks = rental.Books;
+    await rental.removeBooks(books, { through: "BookRental" });
 
-    const booksToRemove = rentedBooks.filter(
-      (book) => !books.includes(book.id),
-    );
+    const leftBooks = await rental.getBooks();
 
-    if (booksToRemove) {
-      await rental.removeBooks(booksToRemove, { through: "BookRental" });
+    if (leftBooks.length === 0) {
+      await Rental.destroy({ where: { id: rentalId } });
     }
 
     return res.status(200).json({ message: "Your rental was updated." });

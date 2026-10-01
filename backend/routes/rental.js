@@ -15,7 +15,7 @@ router.post(
 
 router.get("/:userId/rentals", validateUser, rentalController.getRentals);
 
-router.post(
+router.put(
   "/:userId/rentals/:rentalId",
   validate(updateRentalSchema),
   validateUser,

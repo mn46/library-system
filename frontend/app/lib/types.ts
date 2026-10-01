@@ -10,3 +10,8 @@ export type Book = {
   publishingDate: string;
   authors: Author[];
 };
+
+export type Rental = {
+  id: number;
+  books: Book[];
+};
